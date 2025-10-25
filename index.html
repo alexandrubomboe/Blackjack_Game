@@ -1,54 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Blackjack</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body id="body">
-    <div id="navbar">
-      <div id="present">BambuceaTOP's Blackjack Game</div>
-      <div id="fundMenu">
-        <div id="fundText">
-          Funds: $
-          <div id="funds">0</div>
-        </div>
-        <button id="addFunds">Add $10</button>
-      </div>
-    </div>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Blackjack</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body id="body">
+		<div id="navbar">
+			<div id="present">BambuceaTOP's Blackjack Game</div>
+			<div id="fundMenu">
+				<div id="fundText">
+					Funds: $
+					<div id="funds">0</div>
+				</div>
+				<button id="addFunds">Add $10</button>
+			</div>
+		</div>
 
-    <div id="title">Blackjack</div>
-    <div id="subtitle">Come and lose your money!</div>
+		<div id="title">Blackjack</div>
+		<div id="subtitle">Come and lose your money!</div>
 
-    <div id="pointsDisplay">
-      <div id="userText">Your points: <span id="usersPoints">0</span></div>
-      <div id="opponentText">
-        Opponent's points: <span id="opponentsPoints">0</span>
-      </div>
-    </div>
+		<div id="pointsDisplay">
+			<div id="userText">Your points: <span id="usersPoints">0</span></div>
+			<div id="opponentText">
+				Opponent's points: <span id="opponentsPoints">0</span>
+			</div>
+		</div>
 
-    <div id="game">
-      <div id="user">
-        <div id="userCards">
-          <div id="startCard" class="card"></div>
-        </div>
-        <div id="buttons">
-          <button id="hit">HIT</button>
-          <button id="stand">STAND</button>
-        </div>
-      </div>
-      <div id="opponent">
-        <div id="opponentsCards">
-          <div id="opponentStartCard"></div>
-        </div>
-        <div id="opponentsButtons">
-          <button id="opponentHit">HIT</button>
-          <button id="opponentStand">STAND</button>
-        </div>
-      </div>
-    </div>
-    <div id="overlayText">User Wins!</div>
-    <script src="script.js"></script>
-  </body>
+		<div id="game">
+			<div id="user">
+				<div id="userCards">
+					<div class="cardContainer">
+						<!-- <div id="startCard" class="card"></div>
+						<div class="cardFlip" id="flipCard">
+							<div class="cardFace cardFront" id="backSideUpCard"></div>
+							<div class="cardFace cardBack" id="flipCardBack"></div>
+						</div> -->
+					</div>
+				</div>
+				<div id="buttons">
+					<button id="hit">HIT</button>
+					<button id="stand">STAND</button>
+				</div>
+			</div>
+			<div id="opponent">
+				<div id="opponentsCards">
+					<!-- <div id="opponentStartCard"></div> -->
+				</div>
+				<div id="opponentsButtons">
+					<button id="opponentHit">HIT</button>
+					<button id="opponentStand">STAND</button>
+				</div>
+			</div>
+		</div>
+		<div id="overlayText">User Wins!</div>
+		<script src="script.js"></script>
+	</body>
 </html>
