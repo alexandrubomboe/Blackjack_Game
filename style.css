@@ -165,7 +165,7 @@ button {
 	/* transition: opacity 0.5 ease; */
 }
 
-.cardContainer {
+#cardContainer {
 	perspective: 1000px;
 	display: flex;
 }
@@ -175,12 +175,18 @@ button {
 	/* height: 168px; */
 	aspect-ratio: 2.5/3.5;
 	transform-style: preserve-3d;
-	transition: transform 0.8s;
+	transition: transform 0.8s, opacity 1s;
 }
+
+.cardFace.appear {
+	opacity: 1;
+}
+
 .cardFlip.flipped {
 	/* asta o activez in javasript */
 	transform: rotateY(180deg);
 }
+
 .cardFace {
 	position: absolute;
 	width: 100%;
@@ -191,6 +197,9 @@ button {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
+	opacity: 0;
+	transition: opacity 3s;
+	/* transform: rotateY(180deg); */
 }
 .topLeft {
 	display: flex;
@@ -210,13 +219,14 @@ button {
 }
 
 .cardFront {
-	background-image: url("/blackjackGame/Blackjack_Game/backSideUpPhoto.jpg");
-	background-size: cover;
-}
-.cardBack {
 	background-color: white;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	font-size: 40px;
+	transform: rotateY(180deg);
+}
+.cardBack {
+	background-image: url("./backSideUpPhoto.jpg");
+	background-size: cover;
 }

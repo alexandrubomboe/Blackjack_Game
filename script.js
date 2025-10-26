@@ -1,17 +1,35 @@
+//funds variables
 let funds = document.getElementById("funds");
 let addFunds = document.getElementById("addFunds");
 let body = document.getElementById("body");
 let overlayText = document.getElementById("overlayText");
 
-addFunds.addEventListener("click", () => {
-	funds.innerText = parseInt(funds.innerText) + 10;
-});
+//contaners
+let usersCardContainer = document.getElementById("cardContainer");
+let opponentsCardContainer = document.getElementById("opponentsCards");
 
 //creating the DECK
 let suits = ["hearts", "diamonds", "clubs", "spades"];
 let values = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
 let symbols = ["♥", "♦", "♣", "♠"];
 let deck = [];
+
+//other variables
+let hit = document.getElementById("hit");
+let stand = document.getElementById("stand");
+let userLost = 0;
+let opponentLost = 0;
+let lastCard;
+let opponentLastCard;
+
+//points
+let usersPoints = document.getElementById("usersPoints");
+let opponentsPoints = document.getElementById("opponentsPoints");
+
+addFunds.addEventListener("click", () => {
+	funds.innerText = parseInt(funds.innerText) + 10;
+});
+
 function createDeck() {
 	for (let i = 0; i < suits.length; i++) {
 		for (let j = 0; j < values.length; j++) {
@@ -35,9 +53,7 @@ function createDeck() {
 		}
 	}
 }
-createDeck();
 
-let usersPoints = document.getElementById("usersPoints");
 function pointsUpdate(value, usersPoints) {
 	if (!["J", "Q", "K", "A"].includes(value)) {
 		usersPoints.innerText = parseInt(usersPoints.innerText) + parseInt(value);
@@ -53,11 +69,27 @@ function pointsUpdate(value, usersPoints) {
 }
 
 //when HIT button is clicked, display random card
-let hit = document.getElementById("hit");
-let stand = document.getElementById("stand");
+function showCard(card, container, backSideUp) {
+	let newCard = `	<div class="cardFlip ${backSideUp ? "" : "flipped"}">
+			<div class="cardFace cardBack appear"></div>
+			<div class="cardFace cardFront appear ${card.color}">
+				<div class="topLeft">
+					<div id="value">${card.value}</div>
+					<div id="symbol">${card.symbol}</div>
+				</div>
+				<div class="middle">
+					<div id="symbol">${card.symbol}</div>
+				</div>
+				<div class="bottomRight">
+					<div id="symbol">${card.symbol}</div>
+					<div id="value">${card.value}</div>
+				</div>
+			</div>
+		</div>`;
 
-let userLost = 0;
-let opponentLost = 0;
+	container.innerHTML += newCard;
+}
+
 stand.addEventListener("click", () => {
 	hit.style.visibility = "hidden";
 	stand.style.visibility = "hidden";
@@ -73,59 +105,36 @@ stand.addEventListener("click", () => {
 
 	opponentTurn(); // start the opponent's turn
 });
+
 hit.addEventListener("click", () => {
+	let card = getCardFromDeck();
+
+	usersCardContainer.children[
+		usersCardContainer.children.length - 1
+	].classList.add("flipped");
+
+	pointsUpdate(lastCard.value, usersPoints);
+
 	hit.style.visibility = "hidden";
 	stand.style.visibility = "hidden";
-	let random = Math.floor(Math.random() * (deck.length + 1));
-	let card = deck[random];
 
-	let flipCard = document.getElementById("flipCard");
-	let flipCardBack = document.getElementById("flipCardBack");
-
-	//create and display new card on the back side
-	showCard(card, flipCardBack);
-	flipCardBack.innerHTML = "";
-	createNewCard();
-	//trigger the flip
-	flipCard.classList.add("flipped");
+	setTimeout(() => {
+		showCard(card, usersCardContainer, 1);
+	}, 1300);
 
 	setTimeout(() => {
 		buttonsDisplay();
 	}, 1300);
-	pointsUpdate(card.value, usersPoints);
+
 	if (parseInt(usersPoints.innerText) > 21) {
 		userLost = 1;
 		setTimeout(() => {
 			stand.click();
 		}, 1300);
 	}
+	lastCard = card;
 });
-function showCard(card, container, backSideUp) {
-	let cardContainer = document.getElementsByClassName(container)[0];
-	function createNewCard(card) {
-		return `
-			<div class="cardFlip" id="flipCard">
-				<div class="cardFace cardFront" id="backSideUpCard"></div>
-				<div class="cardFace cardBack ${card.color}" id="flipCardBack">
-					<div class="topLeft">
-						<div id="value">${card.value}</div>
-						<div id="symbol">${card.symbol}</div>
-					</div>
-					<div class="middle">
-						<div id="symbol">${card.symbol}</div>
-					</div>
-					<div class="bottomRight">
-						<div id="symbol">${card.symbol}</div>
-						<div id="value">${card.value}</div>
-					</div>
-				</div>
-			</div>`;
-	}
-	cardContainer.innerHTML += createNewCard(card);
-}
-showCard(deck[0], "cardContainer", false);
-showCard(deck[2], "cardContainer", false);
-showCard(deck[40], "cardContainer", false);
+
 function opponentHit() {
 	if (parseInt(opponentsPoints.innerText) <= 16) {
 		let random = Math.floor(Math.random() * (deck.length + 1));
@@ -137,10 +146,12 @@ function opponentHit() {
 		opponentLost = 1;
 	}
 }
+
 function buttonsDisplay() {
 	hit.style.visibility = "visible";
 	stand.style.visibility = "visible";
 }
+
 function endGame() {
 	if (userLost == 0 && opponentLost == 0) {
 		if (parseInt(usersPoints.innerText) > parseInt(opponentsPoints.innerText)) {
@@ -163,14 +174,40 @@ function endGame() {
 		location.reload();
 	}, 1400);
 }
+
 function userWin() {
 	overlayText.style.visibility = "visible";
 }
+
 function opponentWin() {
 	overlayText.innerText = "Opponent wins!";
 	overlayText.style.visibility = "visible";
 }
+
 function draw() {
 	overlayText.innerText = "Draw!";
 	overlayText.style.visibility = "visible";
 }
+
+function getCardFromDeck() {
+	return deck[Math.floor(Math.random() * (deck.length + 1))];
+}
+
+//incepe jocul
+createDeck();
+//first cards for user
+lastCard = getCardFromDeck();
+pointsUpdate(lastCard.value, usersPoints);
+showCard(lastCard, usersCardContainer, 0);
+
+lastCard = getCardFromDeck();
+showCard(lastCard, usersCardContainer, 1);
+
+//first cards for opponent
+opponentLastCard = getCardFromDeck();
+pointsUpdate(opponentLastCard.value, opponentsPoints);
+showCard(opponentLastCard, opponentsCardContainer, 0);
+
+opponentLastCard = getCardFromDeck();
+pointsUpdate(opponentLastCard.value, opponentsPoints);
+showCard(opponentLastCard, opponentsCardContainer, 0);
